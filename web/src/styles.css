@@ -1,0 +1,1273 @@
+/*
+  OpenPons — Primer, borrowed whole
+  ═════════════════════════════════
+
+  ## The idea
+
+  The product funds GitHub repositories, so the site speaks GitHub's visual language: Primer's
+  exact light palette, its 6px radius, its hairline borders, a dark #24292f header, and ONE green
+  spent only on the primary action — the button every developer already trusts.
+
+  ## The rules that keep it coherent
+
+  1. ⛔ PRIMER'S NUMBERS, NOT APPROXIMATIONS. #f6f8fa panels, #d0d7de borders, #0969da links,
+     #2da44e primary. A near-miss palette reads as a knock-off; the exact one reads as native.
+  2. ⭐ GREEN IS THE VERB. Only the action that moves things forward is green. Links are blue,
+     structure is grey, and the "Graduated" badge borrows merged-purple.
+  3. ⛔ TWO RADIUS FAMILIES, LIKE GITHUB'S: 6px for boxes, buttons and inputs; full-round for the
+     small pills (labels, counters, the CA strip). Nothing in between.
+  4. ⚠ The dark header is the identity move: everything below it is paper-white and quiet.
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Mona+Sans:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  /* ── ground: Primer light, verbatim ── */
+  --paper: #ffffff;
+  --paper-2: #f6f8fa;
+  --panel: #ffffff;
+  --edge: #d0d7de;
+  --edge-lit: #afb8c1;
+
+  /* ── links and focus: Primer blue ── */
+  --accent: #0969da;
+  --accent-hi: #ddf4ff;
+  --accent-deep: #0550ae;
+
+  /* ── the verb: Primer's primary green, and its subtle wash ── */
+  --success: #2da44e;
+  --success-deep: #2c974b;
+  --success-hi: #dafbe1;
+  /* "Graduated" borrows merged-purple: done, sealed, promoted. */
+  --done: #8250df;
+
+  /* ── legacy names, mapped to neutrals so nothing off-palette survives ── */
+  --chrome: #d0d7de;
+  --sage: #656d76;
+  --sage-deep: #424a53;
+
+  /* ── ink ── */
+  --ink: #1f2328;
+  --ink-2: #32383f;
+  --text: #1f2328;
+  --text-dim: #656d76;
+  /* ⛔ MEASURED: #59636e holds AA on both --paper and --paper-2 at the small sizes it labels. */
+  --text-faint: #59636e;
+  --on-ink: #ffffff;
+  --on-accent: #ffffff;
+
+  --danger: #cf222e;
+  --good: #1a7f37;
+
+  /* ── the dark header, github.com's identity move ── */
+  --header-bg: #24292f;
+  --header-fg: #f0f6fc;
+  --header-dim: rgba(240, 246, 252, 0.72);
+  --header-edge: rgba(240, 246, 252, 0.14);
+
+  --font-display: 'Mona Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif;
+  --font-ui: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-mono: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --wrap: 1300px;
+  --r: 6px;
+  --r-sm: 6px;
+  --pill: 999px;
+
+  --lift: 0 1px 0 rgba(31, 35, 40, 0.04);
+  --overlay-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; }
+::selection { background: var(--accent); color: var(--on-accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* ══ type ═══════════════════════════════════════════════════════════════════
+
+  ⭐⭐ The headline is set at a size that feels slightly too large, because at merely large it reads
+  as a heading and at this size it reads as the page itself. Tracking goes NEGATIVE as size goes up:
+  a grotesque at 88px with default tracking looks loose and amateur, and it is the single most
+  common tell of a page that was typeset by nobody.
+*/
+
+h1, h2, h3, h4 { font-family: var(--font-display); margin: 0; }
+
+h1 {
+  /* ⚠ Smaller than the left aligned version it replaced. Centred type has no column edge to hold
+     it, so the same size reads as shouting, and at 5.6rem it pushed the buttons under the fold on
+     a laptop, which is the one thing a hero must not do. */
+  font-size: clamp(2.7rem, 5.2vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.0;
+  letter-spacing: -0.035em;
+}
+h2 {
+  font-size: clamp(2.1rem, 4.1vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.032em;
+}
+h3 { font-size: 1.12rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.015em; }
+
+p { margin: 0 0 1rem; color: var(--text-dim); }
+
+.mono { font-family: var(--font-mono); font-size: 0.82em; letter-spacing: -0.02em; }
+
+.eyebrow {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin: 0 0 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+/* ⚠ Rules on BOTH sides, because this label is centred in the hero and a rule on one side only
+   reads as a mistake there. Section eyebrows are left aligned and simply lose the leading rule. */
+.eyebrow::before, .eyebrow::after {
+  content: ''; height: 1px; flex: 1; max-width: 74px; background: var(--edge-lit);
+}
+.head .eyebrow::before { display: none; }
+.head .eyebrow::after { max-width: none; background: linear-gradient(90deg, var(--edge-lit), transparent); }
+
+/* ⭐ The one emphasis device: the word goes green, the way GitHub's own marketing type does. A
+   background wash fought the tight line-height and bled into the line above. */
+.hl { color: var(--good); }
+
+/* ⭐ The wordmark's second half is always green — the brand gesture, everywhere the name is set
+   in text. Brighter on the dark band, where Primer's light-mode green sinks. */
+.pons { color: var(--success); }
+.hdr .pons { color: #3fb950; }
+
+/* ══ layout ═════════════════════════════════════════════════════════════════ */
+
+.wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
+section { padding: 92px 0; position: relative; }
+.section--alt { background: var(--paper-2); }
+
+.head { max-width: 760px; margin-bottom: 44px; }
+.head p { font-size: 1.02rem; max-width: 62ch; }
+
+/* ⚠ A modifier, not a swap to `chead`. These three are an h2 section heading and two result states,
+   not page titles, so they keep their own type scale and heading level and only change alignment.
+   ⛔ The eyebrow's rules have to be put back: `.head` deliberately hides the leading one and turns
+   the trailing one into a one sided gradient, which is exactly right ranged left and lopsided the
+   moment the block is centred. */
+.head--center { margin-left: auto; margin-right: auto; text-align: center; }
+.head--center p { margin-left: auto; margin-right: auto; }
+.head--center .eyebrow { justify-content: center; }
+.head--center .eyebrow::before { display: block; }
+.head--center .eyebrow::after { max-width: 74px; background: var(--edge-lit); }
+
+/* ══ the mark ═══════════════════════════════════════════════════════════════
+
+  ⚠ The hero mark carried a slow specular sweep, a white highlight travelling across the artwork on
+  a nine second loop. Removed at the operator's request. The `@keyframes` and the reduced-motion
+  override went with it rather than being left behind as rules matching nothing.
+*/
+.mark { position: relative; display: block; flex: none; }
+.mark img { display: block; width: 100%; height: 100%; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition-duration: 0.01ms !important; }
+}
+
+/* ══ header ═════════════════════════════════════════════════════════════════ */
+
+.hdr {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+}
+/* ⚠ A three column grid with equal outer tracks, not a flex row. Centring with `margin: auto` puts
+   the nav in the middle of the LEFTOVER space, so it drifts as the wallet button's width changes
+   between "Connect" and an address. Equal 1fr tracks centre it against the page. */
+.hdr__in {
+  max-width: var(--wrap); margin: 0 auto; padding: 0 28px;
+  height: 72px;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px;
+}
+.hdr__right { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.hdr__brand { display: flex; align-items: center; gap: 11px; min-height: 44px; }
+/* ⭐ The mark gets a rounded accent tile, the way a physical object gets a plinth. It also gives the
+   chrome something to be chrome against at 30px, where a metal gradient alone is just grey. */
+/* ⭐ The same roundel as the hero hallmark, at a smaller size. A rounded green square was both the
+   reference's device and out of step with the punch the hero is built on; one mark shape used at
+   two scales is what a hallmark actually looks like. */
+.hdr__tile {
+  width: 36px; height: 36px; border-radius: 8px; overflow: hidden;
+  display: grid; place-items: center; flex: none;
+}
+.hdr__tile .mark { width: 36px; height: 36px; }
+.hdr__name { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; letter-spacing: -0.02em; white-space: nowrap; color: var(--header-fg); }
+
+/* ══ segmented nav ══════════════════════════════════════════════════════════
+
+  ⭐ One recessed track with the current segment raised out of it. The three destinations are one
+  choice, so they read as one control rather than three separate links, and it gives the header a
+  centre of gravity that an evenly spaced row never has.
+*/
+/* ⭐ github.com's own nav: quiet bold links on the dark band, the current one full-white with a
+   soft plate. No recessed track — the header itself is the track. */
+.seg {
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.seg__item {
+  padding: 8px 14px; border-radius: var(--r);
+  font-size: 0.875rem; font-weight: 600; white-space: nowrap;
+  color: var(--header-dim);
+  transition: color 0.16s, background 0.16s;
+}
+.seg__item:hover { color: var(--header-fg); }
+.seg__item.is-on {
+  color: var(--header-fg);
+  background: rgba(240, 246, 252, 0.1);
+}
+.hdr__x {
+  display: grid; place-items: center; width: 36px; height: 36px; border-radius: var(--r);
+  color: var(--header-dim); transition: background 0.16s, color 0.16s;
+}
+.hdr__x:hover { background: rgba(240, 246, 252, 0.1); color: var(--header-fg); }
+/* ⚠ Every button that sits ON the dark band restyles for it — github.com's bordered ghost. */
+.hdr .btn {
+  background: transparent; border-color: var(--header-edge); color: var(--header-fg);
+}
+.hdr .btn:hover:not(:disabled) { background: rgba(240, 246, 252, 0.1); border-color: var(--header-dim); }
+.hdr__x svg { width: 15px; height: 15px; fill: currentColor; }
+
+/* ══ buttons ════════════════════════════════════════════════════════════════ */
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 11px 20px; border-radius: var(--r);
+  border: 1px solid rgba(31, 35, 40, 0.15); background: var(--paper-2); color: var(--text);
+  font-size: 0.84rem; font-weight: 600; letter-spacing: 0.01em;
+  cursor: pointer; white-space: nowrap; min-height: 44px;
+  transition: background 0.16s, border-color 0.16s, color 0.16s, transform 0.1s;
+}
+.btn:hover:not(:disabled) { background: #f3f4f6; border-color: rgba(31, 35, 40, 0.15); }
+.btn:active:not(:disabled) { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* ⭐ The primary action is GitHub's green button, verbatim — the one control every developer
+   already trusts with a merge. */
+.btn--ink { background: var(--success); border-color: rgba(31, 35, 40, 0.15); color: #ffffff; }
+.btn--ink:hover:not(:disabled) { background: var(--success-deep); border-color: rgba(31, 35, 40, 0.15); color: #ffffff; }
+
+.btn--accent { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.btn--accent:hover:not(:disabled) { background: var(--accent-deep); border-color: var(--accent-deep); }
+
+.btn--lg { padding: 14px 26px; font-size: 0.94rem; min-height: 52px; }
+.btn--sm { padding: 8px 15px; font-size: 0.78rem; min-height: 40px; }
+
+.chips { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  padding: 9px 17px; border-radius: var(--r); min-height: 40px;
+  border: 1px solid rgba(31, 35, 40, 0.15); background: var(--paper-2); color: var(--text-dim);
+  font-size: 0.8rem; font-weight: 600; cursor: pointer;
+  transition: background 0.16s, color 0.16s, border-color 0.16s;
+}
+.chip:hover { background: var(--paper-2); color: var(--text); }
+.chip[aria-pressed='true'] { background: var(--ink); border-color: var(--ink); color: var(--on-ink); }
+
+/* ══ panels ═════════════════════════════════════════════════════════════════ */
+
+.panel { background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r); box-shadow: var(--lift); }
+.panel--pad { padding: 26px; }
+/* ⭐ The Primer Box: a panel that opens with an eyebrow grows a real header band, github style. */
+.panel--pad > .eyebrow:first-child {
+  margin: -26px -26px 20px; padding: 12px 18px;
+  background: var(--paper-2); border-bottom: 1px solid var(--edge);
+  border-radius: var(--r) var(--r) 0 0;
+  font-size: 0.8rem; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--text);
+}
+.panel--pad > .eyebrow:first-child::before, .panel--pad > .eyebrow:first-child::after { display: none; }
+.panel--flat { box-shadow: none; }
+
+/* ══ the split bar ══════════════════════════════════════════════════════════
+
+  ⭐⭐ The whole product in one object: how much of every fee belongs to the project. It appears in
+  the launch form where a creator sets it and again on every card where a buyer reads it, identical
+  both times, so the promise made and the promise displayed are visibly the same promise.
+*/
+/* ⭐ Recoloured as GitHub's language bar: the repo's share is the green segment. */
+.split {
+  height: 34px; border-radius: var(--pill); overflow: hidden; display: flex;
+  background: #eaeef2; border: 1px solid var(--edge);
+}
+.split__a {
+  background: var(--success); color: #ffffff;
+  display: flex; align-items: center; padding: 0 14px;
+  font-size: 0.76rem; font-weight: 600; white-space: nowrap; overflow: hidden;
+  transition: width 0.22s cubic-bezier(0.3, 0, 0.2, 1);
+}
+.split__b {
+  flex: 1; display: flex; align-items: center; justify-content: flex-end; padding: 0 14px;
+  font-size: 0.76rem; font-weight: 500; color: var(--text-dim); white-space: nowrap; overflow: hidden;
+}
+.split--sm { height: 26px; }
+.split--sm .split__a, .split--sm .split__b { font-size: 0.68rem; padding: 0 10px; }
+
+/* ══ forms ══════════════════════════════════════════════════════════════════ */
+
+.field { margin-bottom: 20px; }
+.field__l { display: block; font-size: 0.82rem; font-weight: 600; margin-bottom: 8px; }
+.field__h { font-size: 0.79rem; color: var(--text-faint); margin: 7px 0 0; line-height: 1.5; }
+.field__err { font-size: 0.79rem; color: var(--danger); margin: 7px 0 0; font-weight: 500; }
+
+.input, .select, .textarea {
+  width: 100%; min-height: 46px; padding: 12px 15px;
+  background: var(--panel); border: 1px solid var(--edge-lit); border-radius: var(--r-sm);
+  color: var(--text); font-family: inherit; font-size: 0.94rem;
+  transition: border-color 0.16s, box-shadow 0.16s;
+}
+.input:focus, .select:focus, .textarea:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.3);
+}
+.input::placeholder, .textarea::placeholder { color: #6e7781; }
+.input.mono, .textarea.mono { font-family: var(--font-mono); font-size: 0.85rem; }
+.textarea { resize: vertical; min-height: 82px; }
+.select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text) 50%), linear-gradient(135deg, var(--text) 50%, transparent 50%);
+  background-position: calc(100% - 19px) center, calc(100% - 14px) center;
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; padding-right: 38px;
+}
+.row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.rule { border: 0; border-top: 1px solid var(--edge); margin: 28px 0; }
+
+/*
+  🔴🔴 THE HIT AREA AND THE TRACK ARE DIFFERENT THINGS, AND STYLING ONLY THE TRACK IS THE BUG.
+
+  Setting `height: 4px` on the input makes the ELEMENT four pixels tall. It looks perfect, since the
+  track is meant to be a hairline, and on a phone the project split, the single most important
+  control on this site, becomes a 4px target nobody can grab. It measured 4px; it did not look 4px.
+
+  ➤ The input is 44px of invisible hit area and the hairline is painted by the track pseudo-element.
+  The thumb is then centred by hand, because a thumb positions against the track box, not the input.
+*/
+input[type='range'] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 44px; background: transparent; outline: none; margin: 2px 0 0; cursor: pointer;
+}
+input[type='range']::-webkit-slider-runnable-track { height: 6px; border-radius: var(--pill); background: var(--paper-2); border: 1px solid var(--edge); }
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 24px; height: 24px; margin-top: -10px;
+  border-radius: 50%; background: var(--success); border: 3px solid var(--panel);
+  cursor: pointer; box-shadow: 0 2px 8px -2px rgba(31, 35, 40, 0.4);
+}
+input[type='range']::-moz-range-track { height: 6px; border-radius: var(--pill); background: var(--paper-2); border: 1px solid var(--edge); }
+input[type='range']::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%; cursor: pointer;
+  background: var(--success); border: 3px solid var(--panel);
+}
+
+/* ══ launch layout ══════════════════════════════════════════════════════════ */
+
+.kv { display: flex; justify-content: space-between; gap: 14px; padding: 9px 0; font-size: 0.87rem; }
+.kv + .kv { border-top: 1px solid var(--edge); }
+.kv__k { color: var(--text-dim); }
+.kv__v { font-weight: 600; text-align: right; }
+.kv__v.mono { font-size: 0.79rem; font-weight: 500; }
+.kv--loud .kv__v { background: var(--accent-hi); padding: 2px 9px; border-radius: var(--pill); }
+
+.claims { display: grid; gap: 16px; }
+.claim { display: flex; gap: 13px; align-items: flex-start; }
+.claim__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-deep); margin-top: 8px; flex: none; }
+.claim p { margin: 0; font-size: 0.91rem; }
+.claim strong { color: var(--text); font-weight: 700; }
+
+/* ══ the ledger ═════════════════════════════════════════════════════════════
+
+  ⭐⭐ A REGISTER, NOT A SHOP. Cards in a grid sell things: big art, a price badge, a hover lift. What
+  this section actually is, is a record of who has been paid, and a record wants ruled rows, aligned
+  figures and no ornament. It reads down the page rather than across it, which is also how somebody
+  checking a claim wants to read it.
+
+  ⚠ What remains of the old ruled register. The rows themselves are cards now (see `.tgrid`), so
+  only the pieces still used elsewhere survive: `.ledger` rules the fee tables on a token page, and
+  the three `.lrow__*` below dress the token in a claim row.
+*/
+
+.ledger { border-top: 1px solid var(--edge); }
+
+.lrow__art {
+  width: 34px; height: 34px; border-radius: 8px; flex: none; object-fit: cover;
+  background: var(--accent-hi); border: 1px solid var(--edge);
+}
+.lrow__name { font-weight: 600; font-size: 0.94rem; line-height: 1.2; }
+.lrow__sym { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-faint); }
+
+.empty {
+  text-align: center; padding: 60px 24px; color: var(--text-dim);
+  border-bottom: 1px solid var(--edge);
+}
+
+@media (max-width: 900px) {
+  /* ⚠ The head disappears rather than shrinking: a six column header at 380px is six unreadable
+     stubs, and the row below carries its own labels once it stacks. */
+  .ledger__head { display: none; }
+            }
+
+/* ══ banner ═════════════════════════════════════════════════════════════════ */
+
+/* Primer's flash-warn, because every banner on this site is a "not open yet". */
+.banner {
+  border: 1px solid rgba(212, 167, 44, 0.4); background: #fff8c5;
+  border-radius: var(--r); padding: 15px 19px;
+  font-size: 0.88rem; color: #4d2d00;
+}
+.banner strong { color: #4d2d00; font-weight: 700; }
+
+/* ══ footer ═════════════════════════════════════════════════════════════════ */
+
+.ftr { border-top: 1px solid var(--edge); padding: 60px 0 44px; background: var(--paper); }
+.ftr__grid { display: grid; grid-template-columns: minmax(0, 1.7fr) repeat(3, minmax(0, 1fr)); gap: 36px; }
+.ftr__brand { display: flex; align-items: center; gap: 11px; margin-bottom: 15px; }
+.ftr h4 { font-family: var(--font-ui); font-size: 0.72rem; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--text-faint); margin: 0 0 14px; }
+.ftr__links { display: flex; flex-direction: column; gap: 4px; font-size: 0.88rem; }
+.ftr__links a, .ftr__links span { color: var(--text-dim); padding: 5px 0; }
+.ftr__links a:hover { color: var(--accent); text-decoration: underline; }
+.ftr__legal { margin-top: 46px; padding-top: 26px; border-top: 1px solid var(--edge); font-size: 0.79rem; color: var(--text-faint); line-height: 1.68; max-width: 82ch; }
+
+/* ══ modal ══════════════════════════════════════════════════════════════════ */
+
+.overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(9, 9, 11, 0.4); backdrop-filter: blur(5px);
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.modal { width: 100%; max-width: 400px; padding: 26px; }
+.modal h3 { margin-bottom: 18px; }
+.wlist { display: flex; flex-direction: column; gap: 8px; }
+.wbtn {
+  display: flex; align-items: center; gap: 13px; width: 100%; min-height: 56px;
+  padding: 13px 15px; border-radius: var(--r-sm);
+  border: 1px solid var(--edge-lit); background: var(--panel);
+  cursor: pointer; text-align: left; font-weight: 600;
+  transition: border-color 0.16s, background 0.16s;
+}
+.wbtn:hover { border-color: var(--ink); background: var(--paper-2); }
+/* 🔴 An explicit size. A wallet icon arrives at whatever resolution its extension ships, one was
+   256px, and markup that only exists inside an open modal is never in a screenshot, so a missing
+   rule here stays invisible until somebody opens it. */
+.wbtn img { width: 28px; height: 28px; border-radius: 7px; flex: none; object-fit: contain; }
+
+/* ══ responsive ═════════════════════════════════════════════════════════════ */
+
+@media (max-width: 1080px) {
+  .ftr__grid { grid-template-columns: 1fr 1fr; }
+}
+
+
+@media (max-width: 680px) {
+  section { padding: 64px 0; }
+  .wrap { padding: 0 18px; }
+  .hdr__in { padding: 0 18px; gap: 12px; }
+  .row { grid-template-columns: 1fr; }
+  .ftr__grid { grid-template-columns: 1fr; gap: 26px; }
+
+  /* ⚠ The small variants are 40px by design at desktop and that is under the touch minimum. Found
+     by measuring at 390px, not by looking: 40px and 44px are indistinguishable in a screenshot. */
+  .btn--sm, .chip { min-height: 44px; }
+  .hdr__x { width: 44px; height: 44px; }
+  /* Footer links measured 33px: 23px of line box plus 5px of padding each side. */
+  .ftr__links a, .ftr__links span { padding: 11px 0; }
+  /* ⚠ The card's "Details" link measured under the touch minimum. Padded rather than made bigger,
+     so the row keeps its proportions and only the target grows. */
+  .ccard__foot a { padding: 12px 0; }
+  .ccard__foot { padding-top: 4px; }
+}
+
+/* ══ project picker ═════════════════════════════════════════════════════════
+
+  ⭐ The most consequential control on the site: what it produces is written into a contract that
+  has no setter. So it is given more room, more explanation and a confirmation step than anything
+  else here, and it deliberately reads slower than the rest of the form.
+*/
+
+.pick {
+  position: absolute; top: calc(100% + 6px); left: 0; right: 0; z-index: 30;
+  background: var(--panel); border: 1px solid var(--edge-lit); border-radius: var(--r);
+  box-shadow: var(--overlay-shadow);
+  max-height: 336px; overflow-y: auto;
+}
+.pick__row {
+  display: block; width: 100%; text-align: left; background: none; border: 0;
+  padding: 12px 16px; cursor: pointer; border-bottom: 1px solid var(--edge);
+  transition: background 0.14s;
+}
+.pick__row:hover { background: var(--paper-2); }
+.pick__name { display: block; font-weight: 600; font-size: 0.92rem; }
+.pick__cause { display: block; font-size: 0.8rem; color: var(--text-dim); margin-top: 2px; line-height: 1.4; }
+.pick__none { padding: 16px; font-size: 0.86rem; color: var(--text-dim); line-height: 1.5; }
+.pick__foot {
+  padding: 11px 16px; font-size: 0.74rem; color: var(--text-faint);
+  background: var(--paper-2); position: sticky; bottom: 0;
+}
+
+.pickcard {
+  margin-top: 12px; padding: 16px; border-radius: var(--r);
+  border: 1px solid var(--edge); background: var(--paper-2);
+  display: flex; flex-direction: column; gap: 12px;
+}
+.pickcard__name { font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; letter-spacing: -0.02em; }
+.pickcard__cause { font-size: 0.86rem; margin: 3px 0 0; }
+
+.verdict {
+  margin-top: 14px; padding: 16px; border-radius: var(--r);
+  border: 1px solid var(--edge); background: var(--panel);
+}
+.verdict--stop { border-color: var(--danger); }
+.verdict__k {
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase;
+  color: var(--text-faint); margin-bottom: 9px;
+}
+
+/* ⭐ Four character groups. An address compared as one 42 character run is compared by nobody; in
+   groups a human keeps their place and actually spots a changed character. */
+.chunks { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.chunks span {
+  font-family: var(--font-mono); font-size: 0.86rem; font-weight: 500;
+  padding: 4px 8px; border-radius: 6px; background: var(--paper-2); border: 1px solid var(--edge);
+}
+
+.checks { list-style: none; margin: 0; padding: 0; display: grid; gap: 11px; }
+.check { display: flex; gap: 11px; align-items: flex-start; font-size: 0.86rem; }
+.check b { font-weight: 600; display: block; }
+.check__detail { display: block; color: var(--text-dim); font-size: 0.82rem; line-height: 1.5; margin-top: 3px; }
+/* ⚠ Never colour alone. Each state also has its own glyph, because a red dot and a green dot are
+   the same dot to a red-green colourblind reader, and this is a payment destination. */
+.check__mark {
+  width: 18px; height: 18px; border-radius: 50%; flex: none; margin-top: 1px;
+  display: grid; place-items: center; font-size: 11px; font-weight: 700; color: var(--panel);
+}
+.check--ok .check__mark { background: var(--good); }
+.check--ok .check__mark::after { content: '\2713'; }
+.check--warn .check__mark { background: #9a7b1f; }
+.check--warn .check__mark::after { content: '!'; }
+.check--unknown .check__mark { background: var(--text-faint); }
+.check--unknown .check__mark::after { content: '?'; }
+.check--stop .check__mark { background: var(--danger); }
+.check--stop .check__mark::after { content: '\00d7'; }
+
+.confirm {
+  display: flex; gap: 11px; align-items: flex-start; margin-top: 16px; padding-top: 15px;
+  border-top: 1px solid var(--edge); font-size: 0.85rem; line-height: 1.5; cursor: pointer;
+}
+.confirm input { width: 19px; height: 19px; margin: 1px 0 0; flex: none; accent-color: var(--success); cursor: pointer; }
+
+/* ══ profile menu ═══════════════════════════════════════════════════════════ */
+
+.profile { position: relative; }
+.profile__trigger { gap: 8px; }
+.profile__trigger.is-open { background: rgba(240, 246, 252, 0.1); border-color: var(--header-dim); }
+.profile__dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--good); flex: none;
+}
+/* ⚠ The dot is the chain state, and it is the only thing in the header that says so. A wallet on
+   the wrong network reads every value as empty, which otherwise looks like an empty site. */
+.profile__trigger.is-warn .profile__dot { background: var(--danger); }
+
+.profile__menu {
+  position: absolute; top: calc(100% + 8px); right: 0; z-index: 60;
+  min-width: 250px; padding: 6px;
+  background: var(--panel); border: 1px solid var(--edge-lit); border-radius: var(--r);
+  box-shadow: var(--overlay-shadow);
+}
+.profile__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px 12px; margin-bottom: 4px; border-bottom: 1px solid var(--edge);
+}
+.profile__addr { font-size: 0.82rem; font-weight: 500; }
+.profile__copy {
+  background: none; border: 0; cursor: pointer; padding: 4px 6px; border-radius: 6px;
+  font-size: 0.74rem; font-weight: 600; color: var(--text-dim);
+}
+.profile__copy:hover { background: var(--paper-2); color: var(--text); }
+.profile__warn {
+  margin: 4px 6px 8px; padding: 9px 11px; border-radius: 8px;
+  background: var(--paper-2); font-size: 0.78rem; line-height: 1.45; color: var(--text-dim);
+}
+.profile__item {
+  display: block; width: 100%; text-align: left; background: none; border: 0;
+  padding: 10px 12px; border-radius: 8px; cursor: pointer;
+  font-size: 0.87rem; font-weight: 500; color: var(--text-dim);
+}
+.profile__item:hover { background: var(--paper-2); color: var(--text); }
+.profile__item--danger { color: var(--danger); }
+.profile__item--danger:hover { background: rgba(160, 60, 34, 0.07); color: var(--danger); }
+.profile__sep { height: 1px; background: var(--edge); margin: 6px 4px; }
+
+/* ══ wallet dialog ══════════════════════════════════════════════════════════ */
+
+.overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(9, 9, 11, 0.42); backdrop-filter: blur(6px);
+  /* ⚠ Aligned to the top on short viewports rather than centred. A centred dialog taller than the
+     window has its head cut off and cannot be scrolled to. */
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: max(12vh, 24px) 20px 24px;
+  overflow-y: auto;
+}
+.modal {
+  width: 100%; max-width: 380px; padding: 20px;
+  background: var(--panel); border: 1px solid var(--edge-lit); border-radius: var(--r);
+  box-shadow: var(--overlay-shadow);
+}
+/* ⚠ The close button is taken OUT of the flow rather than balanced with a spacer. Centring the
+   title in a flex row that also holds a 32px button centres it against the remaining space, so it
+   sits visibly left of centre; only removing the button from the flow centres it against the
+   dialog. */
+.modal__head { position: relative; display: flex; align-items: center; justify-content: center; min-height: 32px; margin-bottom: 18px; }
+.modal__head h3 { font-size: 1.1rem; text-align: center; }
+.modal__x {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  width: 32px; height: 32px; border-radius: 50%; border: 0; background: none;
+  display: grid; place-items: center; cursor: pointer; color: var(--text-dim);
+}
+.modal__x:hover { background: var(--paper-2); color: var(--text); }
+.modal__x svg { width: 15px; height: 15px; }
+.modal__note { font-size: 0.87rem; margin-bottom: 14px; }
+
+.wlist { display: flex; flex-direction: column; gap: 6px; }
+.wbtn {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 54px;
+  padding: 10px 12px; border-radius: 10px;
+  border: 1px solid transparent; background: var(--paper-2);
+  cursor: pointer; text-align: left;
+  transition: border-color 0.14s, background 0.14s;
+}
+.wbtn:hover { border-color: var(--ink); background: var(--panel); }
+.wbtn:disabled { opacity: 0.5; cursor: wait; }
+/* 🔴 An explicit size. A wallet icon arrives at whatever resolution its extension ships, one was
+   256px, and markup that only exists inside an open dialog is never in a screenshot, so a missing
+   rule here stays invisible until somebody opens it. */
+.wbtn img, .wbtn__blank {
+  width: 30px; height: 30px; border-radius: 8px; flex: none; object-fit: contain;
+  background: var(--edge);
+}
+.wbtn__name { font-weight: 600; font-size: 0.92rem; flex: 1; min-width: 0; }
+.wbtn__go { font-size: 0.76rem; font-weight: 600; color: var(--text-faint); }
+.wbtn:hover .wbtn__go { color: var(--text); }
+
+/* ══ token images ═══════════════════════════════════════════════════════════ */
+
+.timg { display: block; object-fit: cover; background: var(--paper-2); }
+.timg--fallback { display: grid; place-items: center; background: var(--accent-hi); }
+.timg--fallback img { width: 58%; height: 58%; object-fit: contain; opacity: 0.75; }
+
+/* ⭐ The preview and the drop zone are the SAME height, set once on the row rather than twice in
+   two places that then drift apart. `align-items: stretch` makes the drop zone follow the square
+   thumbnail, so there is one number to change and they cannot disagree. */
+.logorow { display: flex; gap: 14px; align-items: stretch; --logo-h: 116px; }
+.logorow .timg, .logorow__img {
+  width: var(--logo-h); height: var(--logo-h);
+  border-radius: 14px; border: 1px solid var(--edge); flex: none;
+}
+.logorow > div { display: flex; flex-direction: column; }
+.logorow .drop { flex: 1; min-height: var(--logo-h); }
+
+/* ══ token page ═════════════════════════════════════════════════════════════ */
+
+.tok { padding-top: 40px; }
+.tok__back {
+  display: inline-block; font-size: 0.82rem; font-weight: 500; color: var(--text-dim);
+  margin-bottom: 26px;
+}
+.tok__back:hover { color: var(--accent); }
+.tok__back::before { content: '\2190'; margin-right: 8px; }
+
+.tok__badges { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+/* ⚠⚠ THESE HAD NO CSS AT ALL. Three badges on the token page carried `.tag` and `.tag--live` and
+   nothing in this file matched either, so they rendered as three runs of naked inline text with the
+   spaces between them as the only separator. It survived because the token page only exists for a
+   launched token, and until now there were none to look at.
+   ⛔ The exemption chips on the launch form are `.xtag`, deliberately: a bare `.tag` rule written
+   for those would have landed here, on a page that change had nothing to do with. */
+.tag {
+  display: inline-flex; align-items: center;
+  padding: 5px 12px; border-radius: var(--pill);
+  font-size: 0.76rem; font-weight: 600; white-space: nowrap;
+  background: var(--paper-2); border: 1px solid var(--edge); color: var(--text-dim);
+}
+/* ⭐ The one that says WHO is paid gets the accent. It is the whole claim of the page, and the other
+   two are context for it. */
+.tag--live {
+  background: var(--success); border-color: var(--success); color: #ffffff;
+}
+.tok__desc { margin-top: 20px; max-width: 68ch; font-size: 1rem; }
+.tok__split { margin-top: 26px; max-width: 620px; }
+
+.trow {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 16px;
+  padding: 13px 4px; border-bottom: 1px solid var(--edge); font-size: 0.88rem;
+}
+.trow__k { color: var(--text-dim); }
+.trow__v { font-weight: 600; text-align: right; }
+.trow__v a { font-weight: 500; }
+.trow__v a:hover { color: var(--accent); text-decoration: underline; }
+
+@media (max-width: 620px) {
+  .tok__badges { margin-left: 0; width: 100%; }
+}
+
+/* ══ header, small screens ══════════════════════════════════════════════════ */
+
+@media (max-width: 1040px) {
+  .hdr__in { grid-template-columns: auto 1fr auto; }
+  .seg { justify-self: center; }
+  .seg__item { padding: 8px 13px; font-size: 0.8rem; }
+  .hdr__name { display: none; }
+}
+@media (max-width: 720px) {
+  .hdr__in { grid-template-columns: auto auto; row-gap: 0; height: auto; padding: 12px 18px; }
+  /* ⚠ The nav wraps to its own full width row rather than shrinking to unreadable stubs. */
+  .seg { grid-column: 1 / -1; justify-self: stretch; margin-bottom: 12px; order: 3; }
+  .seg__item { flex: 1; text-align: center; padding: 10px 8px; min-height: 44px; display: grid; place-items: center; }
+}
+
+/* ══ pages ══════════════════════════════════════════════════════════════════ */
+
+.page { padding-top: 52px; }
+
+.sect + .sect { margin-top: 54px; }
+.sect__head {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 18px;
+}
+.sect__title {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.5rem;
+  letter-spacing: -0.028em; display: flex; align-items: center; gap: 11px;
+}
+/* ⚠ The count is of the SECTION before any search, so a search matching nothing still shows how
+   many exist rather than reading as an empty launchpad. */
+.sect__count {
+  font-family: var(--font-ui); font-size: 0.78rem; font-weight: 600;
+  padding: 3px 10px; border-radius: var(--pill);
+  background: var(--paper-2); border: 1px solid var(--edge); color: var(--text-dim);
+}
+.sect__blurb { font-size: 0.88rem; margin: 6px 0 0; }
+
+/* ══ upload ═════════════════════════════════════════════════════════════════ */
+
+.drop {
+  border: 1px dashed var(--edge-lit); border-radius: var(--r-sm);
+  background: var(--paper-2);
+  padding: 18px 16px; min-height: 62px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  text-align: center; cursor: pointer;
+  transition: border-color 0.16s, background 0.16s;
+}
+.drop:hover, .drop:focus-visible { border-color: var(--ink); background: var(--panel); }
+.drop.is-over { border-color: var(--ink); border-style: solid; background: var(--accent-hi); }
+.drop.is-busy { cursor: wait; opacity: 0.7; }
+.drop__t { font-size: 0.88rem; font-weight: 600; }
+.drop__s { font-size: 0.77rem; color: var(--text-faint); }
+
+/* ══ chosen project ═════════════════════════════════════════════════════════ */
+
+.chosen {
+  border: 1px solid var(--edge-lit); border-radius: var(--r); background: var(--panel);
+  padding: 16px 18px;
+}
+.chosen__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.chosen__name { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em; }
+.chosen__cause { font-size: 0.86rem; margin: 4px 0 0; }
+.chosen__addr {
+  margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--edge);
+  display: flex; flex-direction: column; gap: 6px;
+}
+.chosen__addr .mono { font-size: 0.8rem; word-break: break-all; }
+.chosen__addr a { font-size: 0.78rem; color: var(--text-faint); }
+.chosen__addr a:hover { color: var(--text); text-decoration: underline; }
+
+.pick__row--other { border-bottom: 0; background: var(--paper-2); }
+.pick__row--other:hover { background: var(--edge); }
+
+.chosen__assets {
+  margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--edge);
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.chosen__assetk { font-size: 0.8rem; color: var(--text-dim); }
+.chosen__assets + .chosen__addr { border-top: 0; padding-top: 12px; margin-top: 0; }
+.pick__name { display: flex; align-items: center; gap: 9px; }
+.pick__assets {
+  font-family: var(--font-mono); font-size: 0.64rem; font-weight: 500; letter-spacing: 0.04em;
+  color: var(--text-faint); padding: 2px 7px; border-radius: var(--pill);
+  background: var(--paper-2); border: 1px solid var(--edge);
+}
+
+.chosen__logo, .pick__logo {
+  width: 46px; height: 46px; border-radius: 10px; flex: none; object-fit: contain;
+  background: var(--panel); border: 1px solid var(--edge); padding: 3px;
+}
+.pick__logo { width: 34px; height: 34px; }
+.pick__row { display: flex; gap: 12px; align-items: center; }
+.chosen__meta { font-size: 0.76rem; color: var(--text-faint); margin-top: 3px; }
+.chosen__addr .mono { font-size: 0.72rem; }
+
+/* ══ projects directory ════════════════════════════════════════════════════ */
+
+.cbar { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; margin-bottom: 28px; justify-content: center; }
+.cbar .input { max-width: 380px; }
+.chip:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.cgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.ccard {
+  background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r);
+  padding: 18px; display: flex; flex-direction: column; gap: 10px;
+  transition: border-color 0.16s, transform 0.16s, box-shadow 0.16s;
+}
+.ccard:hover { border-color: var(--edge-lit); transform: translateY(-2px); box-shadow: var(--lift); }
+.ccard__top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.ccard__logo {
+  width: 52px; height: 52px; border-radius: 10px; object-fit: contain; flex: none;
+  background: var(--paper-2); border: 1px solid var(--edge); padding: 4px;
+}
+.ccard__name { font-size: 1.02rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.25; }
+.ccard__place { font-size: 0.76rem; color: var(--text-faint); margin-top: -4px; }
+/* ⚠ Clamped, not truncated with an ellipsis in JS. Missions run from one line to a paragraph and a
+   grid where every card is a different height reads as broken rather than as varied. */
+.ccard__mission {
+  font-size: 0.85rem; margin: 0; flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+}
+.ccard__foot {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.76rem; color: var(--text-faint);
+  border-top: 1px solid var(--edge); padding-top: 11px;
+}
+.ccard__foot a:hover { color: var(--text); text-decoration: underline; }
+.ccard__cta { width: 100%; }
+
+/* ⚠ Centred as a block AND as text. `max-width` alone leaves a short note hard against the left
+   edge of a page whose header, search bar and chips are all centred, which reads as misaligned
+   rather than as deliberate. */
+.cnote {
+  margin: 40px auto 0; font-size: 0.78rem; color: var(--text-faint); line-height: 1.6;
+  max-width: 74ch; text-align: center;
+}
+
+/* ══ claim fees ═════════════════════════════════════════════════════════════ */
+
+.claimbar {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 22px;
+}
+.claimbar__fig {
+  flex: 1 1 220px; padding: 16px 18px; border-radius: var(--r);
+  background: var(--panel); border: 1px solid var(--edge);
+}
+.claimbar__k {
+  display: block; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--text-faint); margin-bottom: 8px;
+}
+.claimbar__v {
+  display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.5rem;
+  letter-spacing: -0.028em; font-variant-numeric: tabular-nums;
+}
+
+.claims__list { border-top: 1px solid var(--edge); }
+.claimrow {
+  display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1.2fr) auto;
+  gap: 20px; align-items: center;
+  padding: 16px 8px; border-bottom: 1px solid var(--edge);
+}
+.claimrow__tok { display: flex; align-items: center; gap: 12px; min-width: 0; }
+/* ⚠ Label and figure on ONE line, reading left to right, rather than stacked. Two stacked pairs
+   beside each other made four short lines where the eye had to work out which label went with which
+   number; inline, each pair is one phrase. Right aligned and tabular like every other figure here,
+   so the amounts still line up down the column. */
+.claimrow__fig {
+  display: flex; align-items: baseline; justify-content: flex-end; gap: 8px;
+  text-align: right; font-variant-numeric: tabular-nums;
+}
+.claimrow__k { flex: none; font-size: 0.7rem; color: var(--text-faint); }
+.claimrow__v { font-weight: 700; font-size: 0.92rem; white-space: nowrap; }
+
+/* ⚠ The button keeps its own row on a phone rather than being squeezed beside three figures.
+   It is the one control here that signs a transaction, so it never gets a 40px hit area. */
+@media (max-width: 760px) {
+  .claimrow { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
+  .claimrow__tok { grid-column: 1 / -1; }
+  /* ⚠ Left aligned once they are stacked under the token rather than beside it: a right edge to
+     line up against only exists while they are in their own columns. */
+  .claimrow__fig { justify-content: flex-start; text-align: left; }
+  .claimrow .btn { grid-column: 1 / -1; justify-content: center; min-height: 44px; }
+}
+
+/* ══ the contract table ═════════════════════════════════════════════════════ */
+
+.ctrs { border-top: 1px solid var(--edge); }
+.ctr {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto;
+  gap: 20px; align-items: center;
+  padding: 16px 8px; border-bottom: 1px solid var(--edge);
+}
+.ctr__name { display: block; font-weight: 700; font-size: 0.94rem; }
+.ctr__chain { display: block; font-size: 0.72rem; color: var(--text-faint); margin-top: 2px; }
+.ctr__what { margin: 0; font-size: 0.86rem; }
+.ctr__addr {
+  font-size: 0.78rem; color: var(--text-dim);
+  padding: 6px 12px; border-radius: var(--pill);
+  background: var(--paper-2); border: 1px solid var(--edge); white-space: nowrap;
+}
+.ctr__addr:hover { color: var(--text); border-color: var(--edge-lit); }
+
+@media (max-width: 760px) {
+  .ctr { grid-template-columns: 1fr auto; gap: 10px; }
+  .ctr__what { grid-column: 1 / -1; }
+}
+
+/* ══ tag input (snipe tax exemptions) ═══════════════════════════════════════
+
+  ⚠ The add button sits INSIDE the field's border rather than beside it, so the control reads as one
+  object. A separate button next to an input reads as two, and people type an address and press
+  nothing.
+*/
+.tagin { position: relative; display: flex; align-items: center; }
+.tagin .input { padding-right: 52px; }
+.tagin__add {
+  position: absolute; right: 6px;
+  width: 34px; height: 34px; border-radius: var(--r-sm);
+  display: grid; place-items: center;
+  font-size: 1.15rem; line-height: 1; font-weight: 500;
+  background: var(--paper-2); border: 1px solid var(--edge); color: var(--text-dim);
+  cursor: pointer; transition: background 0.16s, color 0.16s, border-color 0.16s;
+}
+.tagin__add:hover:not(:disabled) { background: var(--accent); color: var(--on-accent); border-color: var(--accent-deep); }
+/* ⚠ Disabled until the draft is a real address, so the button cannot commit half a paste. */
+.tagin__add:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ⛔ `xtag`, NOT `tag`. `.tag` is already the token page's badge class, and a bare `.tag` rule here
+   would have silently restyled three badges on a page this change has nothing to do with. A class
+   name is a global namespace; this stack has had `.row` collide between two components before. */
+.xtags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.xtag {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 5px 8px 5px 11px; border-radius: var(--pill);
+  background: var(--panel); border: 1px solid var(--edge); font-size: 0.78rem;
+}
+.xtag button {
+  border: 0; background: none; cursor: pointer; padding: 0 2px;
+  color: var(--text-faint); font-size: 1rem; line-height: 1;
+}
+.xtag button:hover { color: var(--danger); }
+
+/* ══ the token's contract address, under the hero ═══════════════════════════
+
+  ⭐ ONE OBJECT, AND THE WHOLE OF IT COPIES. There is no separate copy button: a small control beside
+  a 42 character address is a target most people never aim at, and the address is what they are
+  already looking at. Hover lifts the whole strip so it reads as pressable before it is pressed.
+*/
+.ca {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin: 26px auto 0; padding: 10px 16px;
+  border-radius: var(--pill);
+  background: var(--panel); border: 1px solid var(--edge);
+  font: inherit; font-size: 0.8rem; color: var(--text-dim);
+  max-width: 100%; text-align: left;
+}
+.ca__k {
+  flex: none;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-faint);
+}
+/* ⚠ Allowed to shrink and ellipsize rather than push the strip past the viewport. The full address
+   is what gets copied either way; this is for reading, not for transcribing. */
+.ca__v { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; color: var(--text); }
+
+.ca--btn { cursor: pointer; transition: border-color 0.16s, box-shadow 0.16s, background 0.16s; }
+.ca--btn:hover { border-color: var(--edge-lit); box-shadow: var(--lift); }
+.ca--btn:active { transform: translateY(1px); }
+/* ⚠ The accent confirms, briefly, on the object that was pressed. A toast somewhere else asks the
+   reader to look away from the thing they just clicked to find out whether it worked. */
+.ca--btn.is-copied { background: var(--accent); border-color: var(--accent-deep); }
+.ca--btn.is-copied .ca__k, .ca--btn.is-copied .ca__v { color: var(--on-accent); }
+
+/* ⚠ Reserves no space when empty, so the strip does not resize the moment it is clicked. */
+.ca__say:not(:empty) {
+  flex: none; margin-left: 2px;
+  font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; color: var(--on-accent);
+}
+
+/* ⛔ No pointer and no hover when there is nothing to copy. */
+.ca--tba { cursor: default; }
+.ca--tba .ca__v { color: var(--text-faint); letter-spacing: 0.06em; }
+
+/* ══ burn ═══════════════════════════════════════════════════════════════════
+
+  ⚠ Only shown to a wallet that holds the token, so most people never see it. It is also the one
+  irreversible action on this site that is not a launch, which is why it arms before it acts rather
+  than firing on a single click.
+*/
+.burn {
+  margin-top: 20px; padding: 16px 18px;
+  background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r);
+}
+.burn__head { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+.burn__k {
+  font-size: 0.66rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--text-faint); margin-bottom: 4px;
+}
+.burn__v {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.15rem;
+  letter-spacing: -0.025em; font-variant-numeric: tabular-nums;
+}
+.burn__v small { font-size: 0.78rem; color: var(--text-dim); margin-left: 3px; }
+
+.burn__arm { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--edge); }
+/* ⛔ The warning is read BEFORE the field, not after it. A caution under a button is a caution
+   somebody meets on the way back from having pressed it. */
+.burn__warn { font-size: 0.83rem; color: var(--text-dim); margin: 0 0 12px; }
+.burn__warn strong { color: var(--danger); }
+.burn__row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+.burn__row .input { flex: 1; min-width: 140px; }
+.burn__done { margin: 12px 0 0; font-size: 0.86rem; color: var(--text-dim); }
+.burn__done b { color: var(--text); font-variant-numeric: tabular-nums; }
+
+/* ══ github repo preview ════════════════════════════════════════════════════
+
+  ⭐ What the launch will commit to, shown as GitHub describes it. The card appears only once the
+  lookup has returned, so its presence IS the confirmation — there is no tick box to re-ask what
+  the reader can already see.
+*/
+.repocard {
+  display: flex; gap: 12px; align-items: flex-start;
+  margin-top: 10px; padding: 12px 14px;
+  background: var(--paper); border: 1px solid var(--edge); border-radius: var(--r-sm);
+}
+.repocard__img {
+  width: 40px; height: 40px; border-radius: 8px; flex: none; object-fit: cover;
+  background: var(--paper-2); border: 1px solid var(--edge);
+}
+.repocard__body { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.repocard__name { font-size: 0.86rem; font-weight: 600; color: var(--accent); word-break: break-all; }
+.repocard__name:hover { text-decoration: underline; }
+.repocard__desc {
+  margin: 0; font-size: 0.83rem; color: var(--text-dim); line-height: 1.45;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.repocard__stars { font-size: 0.76rem; color: var(--text-faint); }
+
+/* ⚠ The footer reuses .hdr__name for its wordmark, and that class is white for the dark band —
+   scoped back to ink on the white footer, where white-on-white is an invisible brand. */
+.ftr .hdr__name { color: var(--text); }
+
+
+/* ══ THE PRIMER LAYOUT SYSTEM ═══════════════════════════════════════════════
+
+  The redesign's second half: not GitHub's colours but GitHub's SHAPES. Left-aligned page heads
+  with a bottom rule, a split marketing hero, pinned-fact boxes, a commit timeline, search-result
+  rows in a bordered Box, the github.com/new single-column form, and the repo-page grid with an
+  About sidebar.
+*/
+
+/* ── page heads: left-aligned, ruled — the app pattern ── */
+.phead { margin-bottom: 28px; }
+.phead h1 { font-size: clamp(1.7rem, 3vw, 2.1rem); font-weight: 700; letter-spacing: -0.02em; }
+.phead h2 { font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; }
+.phead__sub { font-size: 0.95rem; margin: 8px 0 0; max-width: 72ch; }
+.phead--page { padding-bottom: 18px; border-bottom: 1px solid var(--edge); margin-bottom: 26px; }
+.phead--row {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; flex-wrap: wrap;
+}
+
+/* ── the split hero ── */
+.shero { padding: 72px 0 56px; }
+.shero__grid {
+  display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: 56px; align-items: center;
+}
+.shero__copy h1 { max-width: 14ch; margin: 0 0 18px; }
+.shero__eyebrow {
+  font-size: 0.8rem; font-weight: 600; color: var(--text-faint); margin: 0 0 14px;
+}
+.shero__sub { font-size: 1.08rem; max-width: 52ch; margin: 0 0 24px; }
+.shero__cta { display: flex; gap: 10px; flex-wrap: wrap; }
+.shero .ca { margin: 22px 0 0; }
+
+/* ── the demo treasury card: the product, drawn with its own components ── */
+.demo {
+  background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r);
+  box-shadow: var(--overlay-shadow);
+}
+.demo__head {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: var(--paper-2);
+  border-bottom: 1px solid var(--edge); border-radius: var(--r) var(--r) 0 0;
+}
+.demo__avatar { width: 30px; height: 30px; flex: none; }
+.demo__avatar img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.demo__slug { font-size: 0.88rem; font-weight: 600; color: var(--accent); flex: 1; min-width: 0; }
+.demo__body { padding: 16px; display: flex; flex-direction: column; gap: 2px; }
+.demo__body .split { margin-bottom: 12px; }
+.demo__foot {
+  padding: 12px 16px; border-top: 1px solid var(--edge);
+  display: flex; justify-content: flex-end;
+}
+
+/* ── pinned-fact boxes ── */
+.pins { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 44px; }
+.pins--page { margin-top: 24px; grid-template-columns: repeat(2, 1fr); }
+.pin {
+  background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r);
+  padding: 14px 16px; display: flex; flex-direction: column; gap: 6px;
+}
+.pin__k { font-size: 0.78rem; font-weight: 600; color: var(--text-dim); }
+.pin__v {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.45rem;
+  letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums;
+}
+.pin__v small { font-size: 0.8rem; color: var(--text-dim); font-weight: 600; }
+
+/* ── the timeline: a rail, numbered dots, one box per event ── */
+.tl { position: relative; max-width: 860px; }
+.tl::before {
+  content: ''; position: absolute; left: 15px; top: 8px; bottom: 8px;
+  width: 2px; background: var(--edge);
+}
+.tl__item { position: relative; display: flex; gap: 20px; padding: 0 0 26px; }
+.tl__item:last-child { padding-bottom: 0; }
+.tl__dot {
+  position: relative; z-index: 1; flex: none;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--paper-2); border: 2px solid var(--edge);
+  display: grid; place-items: center;
+  font-family: var(--font-mono); font-size: 0.78rem; font-weight: 600; color: var(--text-dim);
+}
+.tl__item--done .tl__dot { background: var(--success); border-color: var(--success); color: #fff; }
+.tl__item--off { opacity: 0.55; }
+.tl__box {
+  flex: 1; min-width: 0;
+  background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r);
+  padding: 16px 18px;
+}
+.tl__box h3 { margin-bottom: 6px; }
+.tl__box p { font-size: 0.92rem; margin: 0 0 10px; max-width: 68ch; }
+.tl__box p:last-child { margin-bottom: 0; }
+.tl__box .field { margin-bottom: 10px; }
+
+/* ── search-result rows in one Box ── */
+.rowbox { background: var(--panel); border: 1px solid var(--edge); border-radius: var(--r); }
+.rowbox__empty { padding: 48px 24px; text-align: center; color: var(--text-dim); }
+.rrow {
+  display: flex; gap: 14px; align-items: center;
+  padding: 14px 18px;
+}
+.rrow + .rrow, .rowbox .ctr + .ctr { border-top: 1px solid var(--edge); }
+.rrow:hover { background: var(--paper-2); }
+.rrow:first-child { border-radius: var(--r) var(--r) 0 0; }
+.rrow:last-child { border-radius: 0 0 var(--r) var(--r); }
+.rrow__art {
+  width: 44px; height: 44px; border-radius: 6px; border: 1px solid var(--edge);
+  flex: none; object-fit: cover;
+}
+.rrow .timg--fallback img { width: 55%; height: 55%; }
+.rrow__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.rrow__top { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.rrow__name { font-weight: 600; font-size: 0.95rem; }
+.rrow__sym { font-size: 0.74rem; color: var(--text-faint); }
+.rrow__repo {
+  font-size: 0.85rem; font-weight: 600; color: var(--accent);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rrow__meta {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.76rem; color: var(--text-faint);
+}
+.rrow__dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+.rrow__sep { color: var(--edge-lit); }
+.rrow__figs { display: flex; gap: 26px; flex: none; }
+.rrow__fig { display: flex; flex-direction: column; align-items: flex-end; gap: 1px; min-width: 88px; }
+.rrow__figv { font-weight: 700; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+.rrow__figk { font-size: 0.68rem; color: var(--text-faint); }
+
+/* GitHub-style labels (rounded-full, quiet borders) */
+.label {
+  display: inline-flex; align-items: center;
+  padding: 1px 9px; border-radius: var(--pill);
+  font-size: 0.7rem; font-weight: 600; line-height: 1.7; white-space: nowrap;
+  border: 1px solid var(--edge); color: var(--text-dim); background: var(--panel);
+}
+.label--done { border-color: var(--done); color: var(--done); }
+.label--ok { border-color: var(--success); color: var(--good); }
+
+/* ── the github.com/new form column ── */
+.wrap--form { max-width: 768px; }
+.fsec { margin-bottom: 4px; }
+.fsec__t { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 4px; }
+.fsec__d { font-size: 0.86rem; margin: 0 0 16px; }
+.adv { margin: 4px 0; }
+.adv__s {
+  cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--text);
+  list-style-position: inside; padding: 6px 0;
+}
+.adv__s:hover { color: var(--accent); }
+.adv__body { padding-top: 14px; }
+.signing__head {
+  padding: 12px 18px; background: var(--paper-2);
+  border-bottom: 1px solid var(--edge); border-radius: var(--r) var(--r) 0 0;
+  font-size: 0.8rem; font-weight: 600;
+}
+.signing__body { padding: 14px 18px 18px; }
+.fsubmit { display: flex; align-items: center; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+
+/* ── the repo page ── */
+.repohead {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding-bottom: 20px; border-bottom: 1px solid var(--edge);
+}
+.repohead__art { width: 56px; height: 56px; border-radius: 6px; border: 1px solid var(--edge); flex: none; }
+.repohead__id { min-width: 0; }
+.repohead__crumb {
+  display: flex; align-items: baseline; gap: 7px;
+  font-size: 0.9rem; color: var(--text-dim);
+}
+.repohead__crumb a { color: var(--accent); font-weight: 600; }
+.repohead__crumb a:hover { text-decoration: underline; }
+.repohead__sep { color: var(--edge-lit); }
+.repohead__name { font-size: clamp(1.5rem, 2.6vw, 1.9rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.15; }
+.repogrid {
+  display: grid; grid-template-columns: minmax(0, 1fr) 296px;
+  gap: 40px; align-items: start; margin-top: 24px;
+}
+.repogrid__main { min-width: 0; }
+.about { position: sticky; top: 84px; }
+.about__t { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+.about__repo { font-size: 0.9rem; margin: 0 0 10px; }
+.about__repo a { color: var(--accent); font-weight: 600; }
+.about__repo a:hover { text-decoration: underline; }
+.about__rows .trow { padding: 9px 0; font-size: 0.82rem; }
+
+/* ── responsive for the new system ── */
+@media (max-width: 980px) {
+  .shero__grid { grid-template-columns: 1fr; gap: 34px; }
+  .demo { max-width: 480px; }
+  .repogrid { grid-template-columns: 1fr; gap: 28px; }
+  .about { position: static; }
+}
+@media (max-width: 720px) {
+  .pins, .pins--page { grid-template-columns: 1fr; }
+  .rrow__figs { display: none; }
+}

@@ -1,0 +1,42 @@
+# Every suite the repo has, on every PR and push to main.
+# ⚠ The fork tests self-skip in CI: they fork through a loopback proxy (127.0.0.1:8899) that is
+# not started here, and the suite treats an absent RPC as skip, never fail. Run them locally with
+# `node contracts/scripts/rpc-proxy.mjs &` before a release.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  contracts:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: contracts } }
+    steps:
+      - uses: actions/checkout@v4
+        with: { submodules: recursive }
+      - uses: foundry-rs/foundry-toolchain@v1
+      - run: forge build
+      - run: forge test
+
+  remit:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: remit } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - run: npm ci
+      - run: npm test
+
+  web:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: web } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 24 }
+      - run: npm ci
+      - run: npm test
+      - run: npm run build
