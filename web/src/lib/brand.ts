@@ -4,7 +4,7 @@
  * account the project does not own.
  */
 export const X_URL = 'https://x.com/OpenPons'
-export const GITHUB_URL = ''
+export const GITHUB_URL = 'https://github.com/OpenPonsPro/OpenPons'
 export const SITE_URL = ''
 export const SITE_NAME = 'OpenPons'
 
